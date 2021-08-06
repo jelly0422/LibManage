@@ -2,10 +2,7 @@ package com.library.manage.model.entity;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * 类别
@@ -19,12 +16,15 @@ import javax.persistence.Table;
 @Table(name = "category")
 public class Category {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
     /**
      * id
      */
-    @Id
-    @Column(name = "id", length = 10)
-    private String id;
+    @Column(name = "id", length = 10, unique = true)
+    private String code;
 
     /**
      * 介绍

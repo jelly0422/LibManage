@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 
 /**
  * 收藏夹
+ * @author jelly
  */
 @Data
 @AllArgsConstructor

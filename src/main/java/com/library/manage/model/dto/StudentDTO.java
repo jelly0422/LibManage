@@ -6,10 +6,15 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+/**
+ * @author jelly
+ */
 @Data
 @ToString
 @EqualsAndHashCode
 public class StudentDTO {
+
+    private Integer id;
 
     private String name;
 

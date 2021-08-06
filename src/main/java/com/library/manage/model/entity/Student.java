@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 
 /**
  * 学生
+ * @author jelly
  */
 @Data
 @AllArgsConstructor
@@ -19,6 +20,10 @@ import javax.persistence.Entity;
 @Table(name = "student")
 public class Student {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
     /**
      * 姓名
      */
@@ -28,8 +33,7 @@ public class Student {
     /**
      * 学号
      */
-    @Id
-    @Column(name = "stu_no", nullable = false, length = 20)
+    @Column(name = "stu_no", nullable = false, length = 20, unique = true)
     private String stuno;
 
     /**

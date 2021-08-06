@@ -16,11 +16,14 @@ import javax.persistence.*;
 @Table(name = "book")
 public class Book {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
     /**
      * ISBN码
      */
-    @Id
-    @Column(name = "ISBN", nullable = false, length = 13)
+    @Column(name = "ISBN", nullable = false, length = 13, unique = true)
     private String ISBN;
 
     /**

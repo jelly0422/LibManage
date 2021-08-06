@@ -9,6 +9,7 @@ import java.util.Date;
 
 /**
  * 借阅信息
+ * @author jelly
  */
 @Data
 @ToString
