@@ -22,7 +22,12 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryDTO getCategory(String id) {
+    public CategoryDTO getCategory(Integer id) {
         return BeanUtil.entityToDTO(CategoryDTO.class, Objects.requireNonNull(categoryDao.findById(id).orElse(null)));
+    }
+
+    @Override
+    public CategoryDTO getCategory(String code) {
+        return BeanUtil.entityToDTO(CategoryDTO.class, Objects.requireNonNull(categoryDao.findCategoryByCode(code).orElse(null)));
     }
 }
