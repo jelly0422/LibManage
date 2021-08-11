@@ -9,6 +9,7 @@ public interface CategoryService {
 
     CategoryDTO addCategory(CategoryParam categoryParam);
 
-    CategoryDTO getCategory(String id);
+    CategoryDTO getCategory(Integer id);
 
+    CategoryDTO getCategory(String code);
 }
