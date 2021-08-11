@@ -11,5 +11,5 @@ public class MultiDeleteBookParam {
 
     @NotBlank
     @JsonProperty("isbns")
-    private String isbns;
+    private Integer isbns;
 }
