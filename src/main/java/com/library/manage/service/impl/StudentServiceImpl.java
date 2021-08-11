@@ -99,6 +99,7 @@ public class StudentServiceImpl implements StudentService {
                 student.setSex(Sex.valueOf(val));
                 return student;
             });
+            default -> {}
         }
 
         return student1.map(student -> BeanUtil.entityToDTO(StudentDTO.class, studentDao.save(student))).orElse(null);
