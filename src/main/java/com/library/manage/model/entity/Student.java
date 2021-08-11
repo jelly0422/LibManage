@@ -21,6 +21,7 @@ import javax.persistence.Entity;
 public class Student {
 
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
