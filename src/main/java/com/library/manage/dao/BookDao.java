@@ -10,8 +10,9 @@ import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
-public interface BookDao extends JpaRepository<Book, String> {
+public interface BookDao extends JpaRepository<Book, Integer> {
 
     @Transactional
     @Modifying
@@ -27,4 +28,6 @@ public interface BookDao extends JpaRepository<Book, String> {
 
     @Query(value = "select ISBN from book where category=?1", nativeQuery = true)
     List<String> getISBNByCategory(String category);
+
+    Optional<Book> findByISBN(String isbn);
 }
