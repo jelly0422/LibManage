@@ -8,6 +8,8 @@ import com.library.manage.model.dto.BorrowInfoDTO;
 import com.library.manage.model.dto.CommentDTO;
 import com.library.manage.model.entity.BorrowInfo;
 import com.library.manage.model.entity.Comment;
+import com.library.manage.model.vo.BookVO;
+import com.library.manage.service.BookService;
 import com.library.manage.service.StudentService;
 import com.library.manage.util.BeanUtil;
 import com.library.manage.util.DateUtil;
@@ -15,14 +17,14 @@ import com.library.manage.util.Sftp;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @SpringBootTest
 class ManageApplicationTests {
@@ -38,6 +40,10 @@ class ManageApplicationTests {
     CommentDao commentDao;
     @Autowired
     BorrowInfoDao borrowInfoDao;
+    @Autowired
+    BookService bookService;
+    @Autowired
+    RedisTemplate<String, Object> redisTemplate;
 
     @Test
     void test(){
@@ -87,5 +93,16 @@ Date date = sdf.parse(d);
         byAuthor.forEach(comment -> System.out.println(BeanUtil.entityToDTO(CommentDTO.class, comment)));
         Optional<BorrowInfo> byId = borrowInfoDao.findById(5);
         System.out.println(BeanUtil.entityToDTO(BorrowInfoDTO.class, byId.get()));
+    }
+
+    @Test
+    void testRedis(){
+        ListOperations<String, Object> opsForList = redisTemplate.opsForList();
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        Boolean hot = redisTemplate.delete("hot");
+        List<Object> objectList = opsForList.range("hot", 0, opsForList.size("hot") - 1);
+        System.out.println("1");
     }
 }
