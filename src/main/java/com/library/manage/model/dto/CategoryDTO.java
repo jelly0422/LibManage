@@ -9,7 +9,9 @@ import lombok.ToString;
 @EqualsAndHashCode
 public class CategoryDTO {
 
-    private String id;
+    private Integer id;
+
+    private String code;
 
     private String description;
 }

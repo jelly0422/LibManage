@@ -17,13 +17,14 @@ import javax.persistence.*;
 public class Category {
 
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     /**
      * id
      */
-    @Column(name = "id", length = 10, unique = true)
+    @Column(name = "code", length = 10, unique = true)
     private String code;
 
     /**
