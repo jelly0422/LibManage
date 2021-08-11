@@ -6,12 +6,14 @@ import com.library.manage.model.entity.Book;
 import com.library.manage.model.entity.Comment;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 
-@Builder
+@NoArgsConstructor
 @Data
-public class BookVO {
+public class BookVO implements Serializable {
 
     private Book book;
 

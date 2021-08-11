@@ -4,9 +4,11 @@ import com.library.manage.model.entity.BorrowInfo;
 import lombok.Data;
 import lombok.ToString;
 
+import java.io.Serializable;
+
 @Data
 @ToString
-public class BorrowInfoVO {
+public class BorrowInfoVO implements Serializable {
 
     private BookVO Book;
 
