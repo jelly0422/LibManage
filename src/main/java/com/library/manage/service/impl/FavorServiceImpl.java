@@ -53,7 +53,7 @@ public class FavorServiceImpl implements FavorService {
             return null;
         }
         Favor save = favorDao.save(Objects.requireNonNull(BeanUtil.transformFrom(favorParam, Favor.class)));
-        return bookDao.findById(save.getISBN()).orElse(null);
+        return bookDao.findByISBN(save.getISBN()).orElse(null);
     }
 
     @Transactional
