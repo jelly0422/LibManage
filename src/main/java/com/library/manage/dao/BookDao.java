@@ -12,17 +12,36 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Book的dao层
+ * @author jelly
+ */
 public interface BookDao extends JpaRepository<Book, Integer> {
 
+    /**
+     * 更新书籍信息
+     * @param key
+     * @param val
+     * @param ISBN
+     * @return 更新结果
+     */
     @Transactional
     @Modifying
     @Query(value = "update book set #{#key}=#{#val} where ISBN=#{ISBN}", nativeQuery = true)
     Integer updateBookInfo(@Param("key") String key,@Param("val") String val,@Param("ISBN") String ISBN);
 
+    /**
+     * 通过ISBN删除多本书籍
+     * @param ISBNs
+     */
     @Modifying
     @Query(value = "delete from book where ISBN=?1", nativeQuery = true)
     void deleteByISBNs(List<String> ISBNs);
 
+    /**
+     * 评分人数评分给一个权重然后排序，用于计算热门书籍
+     * @return
+     */
     @Query(value = "select ISBN, score, score_num from book order by (score * 5 + score_num / 5) DESC", nativeQuery = true)
     List<Map<String, Object>> findScoreAndISBN();
 

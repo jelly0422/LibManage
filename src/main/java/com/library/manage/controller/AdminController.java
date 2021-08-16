@@ -21,6 +21,9 @@ import springfox.documentation.service.ApiListing;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author jelly
+ */
 @RestController
 @RequestMapping("/admin")
 public class AdminController {

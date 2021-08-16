@@ -22,6 +22,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -101,8 +102,9 @@ Date date = sdf.parse(d);
         List<Integer> list = new ArrayList<>();
         list.add(1);
         list.add(2);
-        Boolean hot = redisTemplate.delete("hot");
-        List<Object> objectList = opsForList.range("hot", 0, opsForList.size("hot") - 1);
-        System.out.println("1");
+        redisTemplate.delete("s");
+        opsForList.leftPushAll("s", list);
+        System.out.println(opsForList.size("s"));
+        System.out.println(opsForList.range("s", 0, opsForList.size("s") - 1));
     }
 }

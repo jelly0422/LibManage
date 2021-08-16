@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
+/**
+ * @author jelly
+ */
 @RestController
 @RequestMapping("/favor")
 public class FavorController {

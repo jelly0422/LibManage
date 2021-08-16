@@ -44,8 +44,9 @@ public class StudentServiceImpl implements StudentService {
     public StudentDTO stuLogin(LoginParam loginParam) {
         Optional<Student> student = studentDao.findById(loginParam.getStuno());
         return student.map(value -> {
-            if (value.getPassword().equals(loginParam.getPassword()))
+            if (value.getPassword().equals(loginParam.getPassword())) {
                 return BeanUtil.entityToDTO(StudentDTO.class, value);
+            }
             return null;
         }).orElse(null);
     }

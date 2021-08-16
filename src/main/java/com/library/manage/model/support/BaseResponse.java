@@ -8,6 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
+/**
+ * 响应封装对象
+ * @author jelly
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

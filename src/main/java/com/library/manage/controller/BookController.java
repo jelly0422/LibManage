@@ -1,12 +1,9 @@
 package com.library.manage.controller;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 import com.library.manage.model.support.BaseResponse;
 import com.library.manage.model.vo.BookVO;
 import com.library.manage.service.BookService;
 import io.swagger.annotations.ApiOperation;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -16,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author jelly
+ */
 @RestController
 @RequestMapping("/book")
 public class BookController {

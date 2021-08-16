@@ -11,6 +11,9 @@ import com.library.manage.service.*;
 import com.library.manage.util.BeanUtil;
 import com.library.manage.util.Sftp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,6 +34,9 @@ public class BookServiceImpl implements BookService {
     FavorService favorService;
     @Autowired
     BorrowInfoService borrowInfoService;
+    @Autowired
+    RedisTemplate<String, Object> redisTemplate;
+
 
     /**
      * 获取所有书籍以及书籍的相关信息
@@ -42,7 +48,11 @@ public class BookServiceImpl implements BookService {
         List<Book> all = bookDao.findAll();//从数据库获取书籍基本信息
         List<BookVO> bookVOS = new ArrayList<>();//创建包装对象链表
         //遍历书籍基本信息，添加到包装对象中
-        all.forEach(book -> bookVOS.add(BookVO.builder().book(book).build()));
+        all.forEach(book -> {
+            BookVO bookVO = new BookVO();
+            bookVO.setBook(book);
+            bookVOS.add(bookVO);
+        });
 
         //遍历书籍基本信息，从数据库获取其他相关信息添加到包装对象中
         for (BookVO b:
@@ -63,9 +73,10 @@ public class BookServiceImpl implements BookService {
 
         BookVO bookVO = null;
 
-        Optional<Book> book = bookDao.findById(ISBN);
+        Optional<Book> book = bookDao.findByISBN(ISBN);
 
-        bookVO = BookVO.builder().book(book.orElse(null)).build();
+        bookVO = new BookVO();
+        bookVO.setBook(book.orElse(null));
         bookVO.setCategory(BeanUtil.entityToDTO(CategoryDTO.class, categoryService.getCategory(book.get().getCategory())));
         bookVO.setComment(commentService.getBookComment(ISBN));
         return bookVO;
@@ -83,15 +94,17 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookVO> getHotBooks() {
+        ListOperations<String, Object> opsForList = redisTemplate.opsForList();
+        List<BookVO> hot = new ArrayList<>();
         List<Map<String, Object>> scoreAndISBN = bookDao.findScoreAndISBN();
         Iterator<Map<String, Object>> iterator = scoreAndISBN.iterator();
-        List<BookVO> hot = new ArrayList<>();
         int count = 0;
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             hot.add(getBook((String) iterator.next().get("ISBN")));
             count++;
-            if (count==5)
-                break;;
+            if (count == 5) {
+                break;
+            }
         }
         return hot;
     }
@@ -117,14 +130,14 @@ public class BookServiceImpl implements BookService {
 
     @Transactional
     @Override
-    public String deleteBooks(String ISBNs) {
-        bookDao.deleteById(ISBNs);
+    public String deleteBooks(Integer id) {
+        bookDao.deleteById(id);
         return "删除成功";
     }
 
     @Override
     public Book getNormalBook(String ISBN) {
-        return bookDao.findById(ISBN).orElse(null);
+        return bookDao.findByISBN(ISBN).orElse(null);
     }
 
     @Transactional
@@ -136,7 +149,7 @@ public class BookServiceImpl implements BookService {
     @Transactional
     @Override
     public void updateBorrow(String ISBN) {
-        Optional<Book> byId = bookDao.findById(ISBN);
+        Optional<Book> byId = bookDao.findByISBN(ISBN);
         byId.ifPresent(book -> {
             book.setStock(book.getStock() - 1);
             book.setBorrowednum(book.getBorrowednum() + 1);
@@ -146,7 +159,7 @@ public class BookServiceImpl implements BookService {
     @Transactional
     @Override
     public void updateRet(String ISBN) {
-        bookDao.findById(ISBN).ifPresent(book -> {
+        bookDao.findByISBN(ISBN).ifPresent(book -> {
             book.setStock(book.getStock() + 1);
             book.setBorrowednum(book.getBorrowednum() - 1);
         });
@@ -155,7 +168,7 @@ public class BookServiceImpl implements BookService {
     @Transactional
     @Override
     public boolean stockIsEnough(String ISBN) {
-        return bookDao.findById(ISBN).get().getStock() > 0;
+        return bookDao.findByISBN(ISBN).get().getStock() > 0;
     }
 
     @Override
@@ -176,4 +189,5 @@ public class BookServiceImpl implements BookService {
         }
         return "上传成功";
     }
+
 }
