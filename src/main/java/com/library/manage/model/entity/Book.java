@@ -72,8 +72,8 @@ public class Book {
     /**
      * 类别
      */
-    @Column(name = "category", nullable = false, length = 10)
-    private String category;
+    @Column(name = "category", nullable = false)
+    private Integer category;
 
     /**
      * 馆藏位置

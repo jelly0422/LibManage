@@ -45,15 +45,17 @@ public class BookController {
     public BaseResponse<List<BookVO>> getHot(){
         List<BookVO> hot = null;
         ListOperations<String, Object> opsForList = redisTemplate.opsForList();
-        Long size;
-        if (redisTemplate.hasKey("hot") && (size = opsForList.size("hot")) > 0){
+        long l = System.currentTimeMillis();
+        if (redisTemplate.hasKey("hot")){
             hot = new ArrayList<>();
-            List<Object> range = opsForList.range("hot", 0, size - 1);
+            List<Object> range = opsForList.range("hot", 0, opsForList.size("hot") - 1);
 //            System.out.println(range);
             hot = range.stream().map(o -> (BookVO)o).collect(Collectors.toList());
         }else{
             hot = bookService.getHotBooks();
         }
+        System.out.println(System.currentTimeMillis() - l);
+
         return BaseResponse.ok(hot);
     }
 }

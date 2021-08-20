@@ -7,6 +7,11 @@ import org.springframework.stereotype.Service;
 @Service
 public interface CategoryService {
 
+    /**
+     * 添加分类
+     * @param categoryParam 分类参数
+     * @return
+     */
     CategoryDTO addCategory(CategoryParam categoryParam);
 
     CategoryDTO getCategory(Integer id);

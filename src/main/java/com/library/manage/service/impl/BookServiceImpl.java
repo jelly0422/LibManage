@@ -58,7 +58,7 @@ public class BookServiceImpl implements BookService {
         for (BookVO b:
              bookVOS) {
             String isbn = b.getBook().getISBN();
-            String category = b.getBook().getCategory();
+            Integer category = b.getBook().getCategory();
             b.setIsFavor(favorService.isFavor(isbn, stuno));
             b.setComment(commentService.getBookComment(isbn));
             b.setCategory(categoryService.getCategory(category));
@@ -68,6 +68,11 @@ public class BookServiceImpl implements BookService {
         return bookVOS;
     }
 
+    /**
+     * 获取一本书籍
+     * @param ISBN 书籍码
+     * @return 书籍
+     */
     @Override
     public BookVO getBook(String ISBN) {
 
@@ -82,6 +87,7 @@ public class BookServiceImpl implements BookService {
         return bookVO;
     }
 
+
     @Transactional
     @Override
     public String updateBook(BookParam bookParam) {
@@ -94,7 +100,6 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookVO> getHotBooks() {
-        ListOperations<String, Object> opsForList = redisTemplate.opsForList();
         List<BookVO> hot = new ArrayList<>();
         List<Map<String, Object>> scoreAndISBN = bookDao.findScoreAndISBN();
         Iterator<Map<String, Object>> iterator = scoreAndISBN.iterator();

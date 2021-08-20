@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 public class CategoryParam {
 
     @NotBlank(message = "id不能为空")
-    private String id;
+    private String code;
 
     @NotBlank(message = "分类描述不能为空")
     private String description;
